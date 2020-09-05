@@ -9,132 +9,66 @@
  *******************/
 const colors = require("chalk");
 const Discord = require("discord.js");
-const nodemailer = require('nodemailer');
-const { info } = require("console");
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
 const dotenv = require('dotenv').config();
 
 
 /*********************
  * Global Properties *
  *********************/
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'dattridge20@gmail.com',
-        pass: process.env.EPASS
-    }
-});
-
-
-
 const roleIDs = {
-    seniors: '744939179619778721',
-    juniors: '744939312596123788',
-    sophomores:'744939352295211148',
-    freshman:'744939409425825923',
-    fifthyear:'744939006021599325',
-    facultyStaff:'745699273425027072',
+    "comp sci": '706898820126212276',
+    "comp info systems": '706898908499935325',
+    engineering: '750513328819929230',
+    cs120: '748931788856098956',
+    cs125: '748931828974616577',
+    cs160: '748931880451178556',
+    cs230: '748933684941553734',
+    cs260: '748933794379333723',
+    cs290: '748933893247205397',
+    cs315: '748933948784115732',
+    cs325: '748930889391669249',
+    cs360: '748934081928101908',
+    cs363: '697156222603886632',
+    cs430: '749058909188259861',
+    cs440: '748931747663708202',
+    cs452: '748934122155540722',
+    cs465: '748936610871115987',
+    cs470: '748940044999458916',
+    cs480: '750529220127752253',
+    cs491: '748954666225631322',
+    cs495: '748955119223046184',
+    engr150: '751509284067475516',
+    engr210: '751518122405789818',
+    engr215: '751509288727347261',
+    engr240: '751509291923407008',
+    engr245: '751509294922465412',
+    engr271: '751518128655302778',
+    engr310: '751509299666354287',
+    engr325: '751509302077947977',
+    engr340: '751518171176894536',
+    engr345: '751518173223977120',
+    engr420: '751509306058342440',
+    engr470: '751509309376168087',
+    engr480: '751518174939447387',
+    engr491: '751517911427973181',
 }
 // Config properties
 const CONFIG = {
     // Bot token
     token: process.env.TOKEN,
-    // Channel IDs
-    channels: {
-        general: "746072643148710012",
-    },
     // Activity shown when the bot appears 'online'
     defaultActivity: {
-        type: "WATCHING", // Activity types: 'PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'
-        message: "over east campus",
+        type: "LEARNING", // Activity types: 'PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'
+        message: "from your mistakes.",
     },
 };
-
-
-async function fetchProfile(userID) {
     
-    fetch('https://home.apu.edu/apu/api/profile/newToken.php', {
-         method: 'POST',
-          body: `user_id=${userID}` 
-    })
-        .then((res) => res.json())
-        .then((json) => {
-            const token = json.data.token;
-            fetch('https://home.apu.edu/apu/api/profile/profileAPIv2.php', {
-                method: 'POST',
-                body: `token=${token}` 
-            })
-            .then((res) => res.json())
-            .then((json) => {
-                console.log(json);
-            })
-        });
-        
-        
-}
-    
-
-
 
 /*************
  * Functions *
  *************/
-const testStudents = ["kjnakamura"];
-const emailSuffix = "@apu.edu";
-const emailedStudents = [];
-const tokensGenerated = [];
-const usedTokens = [];
-const verify = false;
-let inviteLinks = [];
-const numStudents = testStudents.length;
 
-async function sendInvites(message){
-    for (let i = 0; i < numStudents; i++){
-        const netID = testStudents[i];
-        const studentEmail = netID + emailSuffix;
-        var token = '';
-        var max = 999999;
-        var min = 100000;
-    
-        let invite = await message.channel.createInvite(
-            {
-                maxUses: 1,
-                unique: true
-            },
-        )
-        inviteCode = "https://discord.gg/" + invite.code;
-        //console.log(inviteCode);
-        inviteLinks.push({
-            netID: netID,
-            invite: inviteCode
-        });
-        
-        token = generateToken(min, max);
-        //console.log(token);
-        tokensGenerated.push(token.toString());
-        //console.log(studentEmail);
-        const mailOptions = {
-            from: 'dattridge20@gmail.com',
-            to: studentEmail,
-            subject: 'Invite to Azusa Pacific University\'s Community Discord server!',
-            text: 'Welcome back! We have created a virtual place for students to be integrated to while in a remote learning environment! Please use this link to join the Discord server.\n' + inviteCode + '\nOnce joined you will need to put in your access token so that the server knows you are part of the APU community. Here is your token: ' + token
-        };
-        transporter.sendMail(mailOptions, function(error, info){
-                if (error){
-                    console.log(error);
-                } else {
-                    console.log('Email sent: ' + info.response);
-                }
-            });
-        emailedStudents.push(netID);
-        //testStudents.splice(netID);
-        
-    }
-    for (let i = 0; i < tokensGenerated.length; i++){
-        console.log(tokensGenerated[i]);
-    }
-}
 /**
  *  Handle a command from a Discord user.
  *
@@ -147,81 +81,83 @@ async function sendInvites(message){
 async function handleCommand(msg, cmd, args) {
     const channel = msg.channel;
     const member = msg.author;
+    const embed = new Discord.MessageEmbed();  
+    let roleID = '';
     switch (cmd) {
-        case "test":
-            sendInvites(msg);
+        case "major":
             
-            break;
-        case "verify":
-            //verifies
-            let token = args[0];
-            const index = tokensGenerated.indexOf(token);
-            if (tokensGenerated.includes(token)){
-                member.send("The token: " + args.join(" ") + " was accepted!");
-                fetchProfile("").then((profile) => {
-                    console.log(profile);
-                });
-                // member.send("Next please use the command !myinfo followed by your first name, last name, and your academic year (freshman, sophomore, junior, seniors, 5th year). Ex: !myinfo Freddie Cougar Sophomore. If you are faculty/staff please do !myinfo Freddie Cougar faculty/staff.");
-                // verify = true;
-                // usedTokens.push(token);  
-                // tokensGenerated.splice(index, 1);
-            } else if (usedTokens.includes(token)){
-                member.send("The token: " + args.join(" ") + " has already been used. Please use the support text channel to request a new token. We appoligize for the inconvenience.");
-            }else {
-                member.send("The token: " + args.join(" ") + " is invalid. Please double check your email and try again. If the issue persists and you belive this to be incorrect, please put a message into the support text channel and a moderator will help you shortly.")
+            if (channel.type === 'dm') {
+                embed
+                    .setAuthor('What is your major?');
+                member.send(embed);
             }
+
+            member.send("Please run the !classes command to enroll the classes you've taken/taking");
             break;
-        case "myinfo":
-            let name = args[0] + " " + args[1];
-            let year = args[2];
-            year = year.toLowerCase();
-            let roleID = '';
-            if (channel.type === "dm"){
-                if (year.includes("5th year")){
-                    roleID = roleIDs.fifthyear;
-                }else if (year.includes("senior")){
-                    roleID = roleIDs.seniors;
-                } else if(year.includes("junior")){
-                    roleID = roleIDs.juniors;
-                } else if(year.includes("sophomore")){
-                    roleID = roleIDs.sophomores;
-                } else if(year.includes("freshman")){
-                    roleID = roleIDs.freshman;
-                } else if(year.includes("faculty/staff")){
-                    roleID = roleIDs.facultyStaff;
-                } else{
-                    member.send("Im sorry something was not correct, please try the !myinfo command again.")
-                }
-                let role = await Guild.RoleManager.fetch(roleID)
-                let memberObj = await Guild.MemberManager.fetch(member.id)
-                let nickname = await memberObj.setNickname(name);
-                //console.log(memberObj);
-                memberObj.roles.add(role);
-                //memberObj.setNickname(firstName + " " + lastName);
-                console.log(nickname);
-                member.send("Your name on the server has been set to: " + name);
-                member.send("You have been assigned the " + role + ". You now have access to the server! Enjoy!");
-            }
-            break;
-        case "invite":
+        case "classes":
             
+            // if (channel.type === "dm"){
+            //     if (year.includes("5th year")){
+            //         roleID = roleIDs.fifthyear;
+            //     }else if (year.includes("senior")){
+            //         roleID = roleIDs.seniors;
+            //     } else if(year.includes("junior")){
+            //         roleID = roleIDs.juniors;
+            //     } else if(year.includes("sophomore")){
+            //         roleID = roleIDs.sophomores;
+            //     } else if(year.includes("freshman")){
+            //         roleID = roleIDs.freshman;
+            //     } else if(year.includes("faculty/staff")){
+            //         roleID = roleIDs.facultyStaff;
+            //     } else{
+            //         member.send("Im sorry something was not correct, please try the !myinfo command again.")
+            //     }
+            //     let role = await Guild.RoleManager.fetch(roleID)
+            //     let memberObj = await Guild.MemberManager.fetch(member.id)
+            //     let nickname = await memberObj.setNickname(name);
+            //     //console.log(memberObj);
+            //     memberObj.roles.add(role);
+            //     //memberObj.setNickname(firstName + " " + lastName);
+            //     console.log(nickname);
+            //     member.send("Your name on the server has been set to: " + name);
+            //     member.send("You have been assigned the " + role + ". You now have access to the server! Enjoy!");
+            // }
+            if (channel.type === 'dm') {
+                // Reaction role pole here
+                embed
+                    .setAuthor('Classes Taken/Taking')
+                    .setDescription('Please select the classes you have taken/currently taking.');
+                member.send(embed);
+
+            }
+            member.send('');
+            break;
+        case "help":
+            embed
+                .setAuthor("Role Management Bot Commands")
+                .addFields(
+                    {
+                        name: '!major',
+                        value: 'Sends a DM with reactions to self assign major taken/taking.'
+                    },
+                    {
+                        name: '!classes',
+                        value: 'Sends a DM with reactions to self assign classes taken/taking.'
+                    },
+                    {
+                        name: '!help',
+                        value: 'Lists available commands for this bot.'
+                    }
+                );
+                member.send(embed);
             break;
         default:
             msg.reply(
-                `You used the command '!${cmd}' with these arguments: [${args.join(
-                    ", "
-                )}]`
+                `The command ${cmd} probably doesn't exist. Try again?`
             );
             break;
     }
 }
-
-function generateToken(min, max){
-    return Math.floor(
-        Math.random() * (max - min + 1) + min
-    )
-}
-
 
 /**
  *  Print a Discord message to the console with colors for readability.
@@ -255,14 +191,6 @@ client.on("ready", () => {
             type: CONFIG.defaultActivity.type,
         })
         .then();
-
-    // Join the 'general' channel
-    client.channels.fetch(CONFIG.channels.general).then((channel) => {
-        //channel.send("Discord bot has joined the channel");
-        console.log(
-            colors.yellow(`Joined a channel: ${colors.yellow(channel.name)}`)
-        );
-    });
 });
 
 // Handle message from user
@@ -285,30 +213,9 @@ client.on("message", (msg) => {
     }
 });
 client.on("guildMemberAdd", (member) => {
-    member.send("Welcome to the server!");
-    member.send("Please use the command !verify alongside the 6-digit numerical token sent in your invitation email. Ex: \"!verify 012345");
+    member.send(`Welcome to the ${member} server!\nPlease use the command !major to verify your major.`);
+
 });
 
-
-//function for google signin
-
 // Login with the bot's token
-let Guild;
-client.login(CONFIG.token).then(async () => {
-    const tempGuild = client.guilds.cache.get('743597793326661682');
-    Guild = {
-        MemberManager: tempGuild.members,
-        RoleManager: tempGuild.roles
-    };
-        
-    Guild.RoleManager.fetch().then(async (roles) => {
-        for (let role of roles.cache) {
-            role = role[1];
-            //console.log(role);
-            const { name, color, id } = role,
-                hex = color.toString(16);
-            //console.log(colors.hex(`#${hex}`)(name));
-        }
-    });
-    
-})
+client.login(CONFIG.token).then();
