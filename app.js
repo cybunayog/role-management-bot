@@ -63,11 +63,11 @@ const CONFIG = {
     token: process.env.TOKEN,
     // Activity shown when the bot appears 'online'
     defaultActivity: {
-        type: "LEARNING", // Activity types: 'PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'
-        message: "from your mistakes.",
+        type: "WATCHING", // Activity types: 'PLAYING', 'STREAMING', 'LISTENING', 'WATCHING'
+        message: "your mistakes",
     },
 };
-    
+
 
 /*************
  * Functions *
@@ -85,7 +85,7 @@ const CONFIG = {
 async function handleCommand(msg, cmd, args) {
     const channel = msg.channel;
     const member = msg.author;
-    const embed = new Discord.MessageEmbed();  
+    const embed = new Discord.MessageEmbed();
     let roleID = '';
     switch (cmd) {
         case "major":
@@ -95,28 +95,36 @@ async function handleCommand(msg, cmd, args) {
                     .addFields(
                         {
                             name: '<:seth:697168106858217593> Computer Science',
-                            value: '\u200b',
+                            value: '\u200B',
                         },
                         {
-                            name: '<:cy:697168109748093069> Computer Information Systems',
-                            value: '\u200b',
+                            name: '<:aaron:751882504918663308> Computer Information Systems',
+                            value: '\u200B',
                         },
                         {
-                            name: '<:johnathan:697168109710082220> Engineering',
-                            value: '\u200b',
+                            name: '<:beau:751882719889326100> Engineering',
+                            value: '\u200B',
                         }
-                    );
-                member.send(embed);
+                    )
+                member.send(embed).then(embedMessage => {
+                  Promise.all([
+                      embedMessage.react(client.emojis.cache.get('697168106858217593')),
+                      embedMessage.react(client.emojis.cache.get('751882504918663308')),
+                      embedMessage.react(client.emojis.cache.get('751882719889326100'))
+                    ]).then(function() {
+                      member.send("Please select the appropriate emote, in accordance with your major.");
+                    });
+                });
             } else if (channel.type === 'guild_text') {
                 embed
                     .setAuthor('What is your major?');
                 channel.send(embed);
             }
 
-            member.send("Please run the !classes command to enroll the classes you've taken/taking");
+            // member.send("Please run the !classes command to enroll the classes you've taken/taking");
             break;
         case "classes":
-            
+
             // if (channel.type === "dm"){
             //     if (year.includes("5th year")){
             //         roleID = roleIDs.fifthyear;
@@ -223,7 +231,7 @@ client.on("message", (msg) => {
         let words = msg.content.split(" "),
             cmd = words.shift().split("!")[1], // First word, sans exclaimation mark
             args = words; // Everything after first word as an array
-        
+
         handleCommand(msg, cmd, args);
         return;
     }
