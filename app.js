@@ -53,6 +53,10 @@ const roleIDs = {
     engr480: '751518174939447387',
     engr491: '751517911427973181',
 }
+
+const emojis = {
+
+}
 // Config properties
 const CONFIG = {
     // Bot token
@@ -85,11 +89,28 @@ async function handleCommand(msg, cmd, args) {
     let roleID = '';
     switch (cmd) {
         case "major":
-            
             if (channel.type === 'dm') {
                 embed
-                    .setAuthor('What is your major?');
+                    .setAuthor('What is your major?\n')
+                    .addFields(
+                        {
+                            name: '<:seth:697168106858217593> Computer Science',
+                            value: '\u200b',
+                        },
+                        {
+                            name: '<:cy:697168109748093069> Computer Information Systems',
+                            value: '\u200b',
+                        },
+                        {
+                            name: '<:johnathan:697168109710082220> Engineering',
+                            value: '\u200b',
+                        }
+                    );
                 member.send(embed);
+            } else if (channel.type === 'guild_text') {
+                embed
+                    .setAuthor('What is your major?');
+                channel.send(embed);
             }
 
             member.send("Please run the !classes command to enroll the classes you've taken/taking");
