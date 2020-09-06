@@ -73,6 +73,39 @@ const CONFIG = {
  * Functions *
  *************/
 
+ /**
+  *  Handle a command from a Discord user.
+  *
+  *  @param  {Object}     embed           The message object.
+  *  @param  {String}     member          The recipient part of the message.
+  *  @param  {String}     author          The message header.
+  *  @param  {Array}      fields          The message content.
+  *  @param  {Array}      reactions       The optional recations to the message.
+  *  @param  {String}     finalMsg        The optional final message, to be sent after the previous message.
+  *
+  *  @note - Discord messages which are treated as commands are expected to look like: "!commandName arg1 arg2 arg3".
+  */
+function embedTemplate(embed, member, author, fields, reactions, finalMsg) {
+  embed.setAuthor(author)
+  embed.addFields(fields);
+  member.send(embed).then(embedMessage => {
+    let promises = [];
+    if (reactions) {
+      for (var i = 0; i < reactions.length; i++) {
+        promises.push(
+          embedMessage.react(client.emojis.cache.get(reactions[i]))
+        );
+      }
+    }
+    return Promise.all(promises).then(function() {
+        if (finalMsg) {
+          member.send(finalMsg);
+        }
+        return embedMessage;
+      });
+  });
+}
+
 /**
  *  Handle a command from a Discord user.
  *
@@ -85,36 +118,29 @@ const CONFIG = {
 async function handleCommand(msg, cmd, args) {
     const channel = msg.channel;
     const member = msg.author;
-    const embed = new Discord.MessageEmbed();
+    let embed = new Discord.MessageEmbed();
     let roleID = '';
     switch (cmd) {
         case "major":
             if (channel.type === 'dm') {
-                embed
-                    .setAuthor('What is your major?\n')
-                    .addFields(
-                        {
-                            name: '<:seth:697168106858217593> Computer Science',
-                            value: '\u200B',
-                        },
-                        {
-                            name: '<:aaron:751882504918663308> Computer Information Systems',
-                            value: '\u200B',
-                        },
-                        {
-                            name: '<:beau:751882719889326100> Engineering',
-                            value: '\u200B',
-                        }
-                    )
-                member.send(embed).then(embedMessage => {
-                  Promise.all([
-                      embedMessage.react(client.emojis.cache.get('697168106858217593')),
-                      embedMessage.react(client.emojis.cache.get('751882504918663308')),
-                      embedMessage.react(client.emojis.cache.get('751882719889326100'))
-                    ]).then(function() {
-                      member.send("Please select the appropriate emote, in accordance with your major.");
-                    });
-                });
+              embed = (await embedTemplate(embed, member, 'What is your major?\n',
+              [{
+                  name: '<:seth:697168106858217593> Computer Science',
+                  value: '\u200B'
+              },
+              {
+                  name: '<:aaron:751882504918663308> Computer Information Systems',
+                  value: '\u200B',
+              },
+              {
+                  name: '<:beau:751882719889326100> Engineering',
+                  value: '\u200B',
+              }],
+              ['697168106858217593',
+              '751882504918663308',
+              '751882719889326100'],
+              "Please select the appropriate emote, in accordance with your major."));
+
             } else if (channel.type === 'guild_text') {
                 embed
                     .setAuthor('What is your major?');
