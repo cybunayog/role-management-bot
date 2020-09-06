@@ -86,23 +86,33 @@ const CONFIG = {
   *  @note - Discord messages which are treated as commands are expected to look like: "!commandName arg1 arg2 arg3".
   */
 function embedTemplate(embed, member, author, fields, reactions, finalMsg) {
-  embed.setAuthor(author)
-  embed.addFields(fields);
-  member.send(embed).then(embedMessage => {
-    let promises = [];
-    if (reactions) {
-      for (var i = 0; i < reactions.length; i++) {
-        promises.push(
-          embedMessage.react(client.emojis.cache.get(reactions[i]))
-        );
-      }
-    }
-    return Promise.all(promises).then(function() {
-        if (finalMsg) {
-          member.send(finalMsg);
+  return new Promise(function(resolve, reject) {
+    embed.setAuthor(author)
+    embed.addFields(fields);
+    member.send(embed).then(embedMessage => {
+      let promises = [];
+      if (reactions) {
+        for (var i = 0; i < reactions.length; i++) {
+          promises.push(
+            embedMessage.react(client.emojis.cache.get(reactions[i]))
+          );
         }
-        return embedMessage;
-      });
+      }
+      Promise.all(promises).then(function() {
+          if (finalMsg) {
+            member.send(finalMsg);
+          }
+          const filter = (reaction, user) => reactions.includes(reaction.emoji.id);
+          const collector = embedMessage.createReactionCollector(filter, { time: 15000 });
+          collector.on('collect', r => {
+            resolve(fields.filter(function (field) {
+              if (field.name.split("> ")[0].substring(2).split(":")[0] === r.emoji.name) {
+                return field.name;
+              }
+            }));
+          });
+        });
+    });
   });
 }
 
@@ -123,7 +133,7 @@ async function handleCommand(msg, cmd, args) {
     switch (cmd) {
         case "major":
             if (channel.type === 'dm') {
-              embed = (await embedTemplate(embed, member, 'What is your major?\n',
+              embed = await embedTemplate(embed, member, 'What is your major?\n',
               [{
                   name: '<:seth:697168106858217593> Computer Science',
                   value: '\u200B'
@@ -139,7 +149,10 @@ async function handleCommand(msg, cmd, args) {
               ['697168106858217593',
               '751882504918663308',
               '751882719889326100'],
-              "Please select the appropriate emote, in accordance with your major."));
+              "Please select the appropriate emote, in accordance with your major.");
+
+              let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split("> ")[1]);
+              client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
 
             } else if (channel.type === 'guild_text') {
                 embed
