@@ -17,8 +17,8 @@ const dotenv = require('dotenv').config();
  * Global Properties *
  *********************/
 const roleIDs = {
-    "comp sci": '706898820126212276',
-    "comp info systems": '706898908499935325',
+    cs: '706898820126212276',
+    cis: '706898908499935325',
     engineering: '750513328819929230',
     cs120: '748931788856098956',
     cs125: '748931828974616577',
@@ -129,17 +129,17 @@ async function handleCommand(msg, cmd, args) {
     const channel = msg.channel;
     const member = msg.author;
     let embed = new Discord.MessageEmbed();
-    let roleID = '';
+
     switch (cmd) {
         case "major":
             if (channel.type === 'dm') {
               embed = await embedTemplate(embed, member, 'What is your major?\n',
               [{
-                  name: '<:seth:697168106858217593> Computer Science',
+                  name: '<:seth:697168106858217593> CS',
                   value: '\u200B'
               },
               {
-                  name: '<:aaron:751882504918663308> Computer Information Systems',
+                  name: '<:aaron:751882504918663308> CIS',
                   value: '\u200B',
               },
               {
@@ -151,54 +151,168 @@ async function handleCommand(msg, cmd, args) {
               '751882719889326100'],
               "Please select the appropriate emote, in accordance with your major.");
 
+              // Assigns roles
               let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split("> ")[1]);
               client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
-
-            } else if (channel.type === 'guild_text') {
-                embed
-                    .setAuthor('What is your major?');
-                channel.send(embed);
+              
+                console.log(client.guilds.cache.get('697153419114446968'));
+            } else {
+                channel.send(`I'm probably sliding in your DM's, check there.`);
             }
 
             // member.send("Please run the !classes command to enroll the classes you've taken/taking");
             break;
         case "classes":
-
-            // if (channel.type === "dm"){
-            //     if (year.includes("5th year")){
-            //         roleID = roleIDs.fifthyear;
-            //     }else if (year.includes("senior")){
-            //         roleID = roleIDs.seniors;
-            //     } else if(year.includes("junior")){
-            //         roleID = roleIDs.juniors;
-            //     } else if(year.includes("sophomore")){
-            //         roleID = roleIDs.sophomores;
-            //     } else if(year.includes("freshman")){
-            //         roleID = roleIDs.freshman;
-            //     } else if(year.includes("faculty/staff")){
-            //         roleID = roleIDs.facultyStaff;
-            //     } else{
-            //         member.send("Im sorry something was not correct, please try the !myinfo command again.")
-            //     }
-            //     let role = await Guild.RoleManager.fetch(roleID)
-            //     let memberObj = await Guild.MemberManager.fetch(member.id)
-            //     let nickname = await memberObj.setNickname(name);
-            //     //console.log(memberObj);
-            //     memberObj.roles.add(role);
-            //     //memberObj.setNickname(firstName + " " + lastName);
-            //     console.log(nickname);
-            //     member.send("Your name on the server has been set to: " + name);
-            //     member.send("You have been assigned the " + role + ". You now have access to the server! Enjoy!");
-            // }
             if (channel.type === 'dm') {
                 // Reaction role pole here
-                embed
-                    .setAuthor('Classes Taken/Taking')
-                    .setDescription('Please select the classes you have taken/currently taking.');
-                member.send(embed);
+                embed = await embedTemplate(embed, member, 'What are your classes?\n',
+                     [
+                         {
+                            name: '<:compsci:755563615712575558> CS120',
+                            value: '\u200B'
+                        },
+                        {
+                            name: '<:johnathan:697168109710082220> C125',
+                            value: '\u200B',
+                        },
+                        {
+                            name: '<:compsci:755563615712575558> CS160',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:ulrich:697168109408354494> CS230',
+                            value: '\u200B',
+                         },
+                          {
+                            name: '<:compsci:755563615712575558> CS260',
+                            value: '\u200B',
+                         },
+                           {
+                            name: '<:compsci:755563615712575558> CS290',
+                            value: '\u200B',
+                         },
+                            {
+                            name: '<:ulrich:697168109408354494> CS315',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:ulrich:697168109408354494> CS325',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS360',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS363',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS430',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:cy:697168109748093069> CS440',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS452',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS465',
+                            value: '\u200B',
+                         },
+                          {
+                            name: '<:compsci:755563615712575558> CS470',
+                            value: '\u200B',
+                         },
+                           {
+                            name: '<:compsci:755563615712575558> CS480',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:compsci:755563615712575558> CS491',
+                            value: '\u200B',
+                         },
+                          {
+                            name: '<:compsci:755566163257196578> CS495',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:eng:755563811544498207> ENGR150',
+                            value: '\u200B',
+                         },
+                          {
+                            name: '<:eng:755563811544498207> ENGR210',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:eng:755563811544498207> ENGR215',
+                            value: '\u200B',
+                        },
+                         {
+                            name: '<:eng:755563811544498207> ENGR240',
+                            value: '\u200B',
+                         },
+                         {
+                            name: '<:eng:755563811544498207> ENGR245',
+                            value: '\u200B',
+                         },
+                         {
+                            name: '<:eng:755563811544498207> ENGR271',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR310',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR325',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR340',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR345',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR420',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR470',
+                            value: '\u200B',
+                         },
+                        {
+                            name: '<:eng:755563811544498207> ENGR480',
+                            value: '\u200B',
+                         },
+                         {
+                            name: '<:eng:755563811544498207> ENGR491',
+                            value: '\u200B',
+                         },
+                    ],
+                    [
+                        '755563615712575558',
+                        '755563811544498207',
+                        '697168109748093069',
+                        '697168109408354494',
+                        '697168109408354494',
+                        '697168109710082220'
+                    ],
+                "Please select the appropriate emote, in accordance to the classes you've taken/taking.");
 
+              // Assigns roles
+              let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split("> ")[1]);
+              client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
+            
+            } else {
+                channel.send(`I'm probably sliding in your DM's, check there.`);
             }
-            member.send('');
             break;
         case "help":
             embed
