@@ -236,7 +236,7 @@ async function handleCommand(msg, cmd, args) {
                             value: '\u200B',
                          },
                           {
-                            name: '<:compsci:755566163257196578> CS495',
+                            name: '<:compsci:755563615712575558> CS495',
                             value: '\u200B',
                         },
                          {
