@@ -154,162 +154,174 @@ async function handleCommand(msg, cmd, args) {
               // Assigns roles
               let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split("> ")[1]);
               client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
-              
-                console.log(client.guilds.cache.get('697153419114446968'));
             } else {
                 channel.send(`I'm probably sliding in your DM's, check there.`);
             }
 
             // member.send("Please run the !classes command to enroll the classes you've taken/taking");
             break;
-        case "classes":
+        case "classes-cs":
             if (channel.type === 'dm') {
                 // Reaction role pole here
                 embed = await embedTemplate(embed, member, 'What are your classes?\n',
                      [
                          {
-                            name: '<:compsci:755563615712575558> CS120',
-                            value: '\u200B'
-                        },
-                        {
-                            name: '<:johnathan:697168109710082220> C125',
-                            value: '\u200B',
-                        },
-                        {
-                            name: '<:compsci:755563615712575558> CS160',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:ulrich:697168109408354494> CS230',
+                            name: ':sunglasses: CS120',
                             value: '\u200B',
                          },
                           {
-                            name: '<:compsci:755563615712575558> CS260',
-                            value: '\u200B',
-                         },
-                           {
-                            name: '<:compsci:755563615712575558> CS290',
-                            value: '\u200B',
-                         },
-                            {
-                            name: '<:ulrich:697168109408354494> CS315',
+                            name: ':nerd: CS125',
                             value: '\u200B',
                         },
                          {
-                            name: '<:ulrich:697168109408354494> CS325',
+                            name: ':face_with_monocle: CS160',
                             value: '\u200B',
                         },
                          {
-                            name: '<:compsci:755563615712575558> CS360',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:compsci:755563615712575558> CS363',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:compsci:755563615712575558> CS430',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:cy:697168109748093069> CS440',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:compsci:755563615712575558> CS452',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:compsci:755563615712575558> CS465',
-                            value: '\u200B',
-                         },
-                          {
-                            name: '<:compsci:755563615712575558> CS470',
-                            value: '\u200B',
-                         },
-                           {
-                            name: '<:compsci:755563615712575558> CS480',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:compsci:755563615712575558> CS491',
-                            value: '\u200B',
-                         },
-                          {
-                            name: '<:compsci:755563615712575558> CS495',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:eng:755563811544498207> ENGR150',
-                            value: '\u200B',
-                         },
-                          {
-                            name: '<:eng:755563811544498207> ENGR210',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:eng:755563811544498207> ENGR215',
-                            value: '\u200B',
-                        },
-                         {
-                            name: '<:eng:755563811544498207> ENGR240',
+                            name: ':grin: CS230',
                             value: '\u200B',
                          },
                          {
-                            name: '<:eng:755563811544498207> ENGR245',
+                            name: ':smile: CS260',
                             value: '\u200B',
                          },
                          {
-                            name: '<:eng:755563811544498207> ENGR271',
+                            name: ':smiley: CS290',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR310',
+                            name: ':grinning: CS315',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR325',
+                            name: ':confused: CS325',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR340',
+                            name: ':slight_frown: CS360',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR345',
+                            name: ':frowning2: CS363',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR420',
+                            name: ':fearful: CS430',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR470',
+                            name: ':sob: CS440',
                             value: '\u200B',
                          },
                         {
-                            name: '<:eng:755563811544498207> ENGR480',
+                            name: ':scream: CS452',
                             value: '\u200B',
                          },
                          {
-                            name: '<:eng:755563811544498207> ENGR491',
+                            name: ':exploding_head: CS465',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':sob: CS470',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':scream: CS480',
+                            value: '\u200B',
+                         },
+                         {
+                            name: ':exploding_head: CS491',
+                            value: '\u200B',
+                         },
+                         {
+                            name: ':skull: CS495',
                             value: '\u200B',
                          },
                     ],
                     [
-                        '755563615712575558',
-                        '755563811544498207',
-                        '697168109748093069',
-                        '697168109408354494',
-                        '697168109408354494',
-                        '697168109710082220'
+                      // reactions go here
                     ],
                 "Please select the appropriate emote, in accordance to the classes you've taken/taking.");
 
               // Assigns roles
-              let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split("> ")[1]);
+              let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split(": ")[1]);
               client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
-            
+
+            } else {
+                channel.send(`I'm probably sliding in your DM's, check there.`);
+            }
+            break;
+        case "classes-eng":
+            if (channel.type === 'dm') {
+                // Reaction role pole here
+                embed = await embedTemplate(embed, member, 'What are your classes?\n',
+                     [
+                         {
+                            name: ':sunglasses: ENGR150',
+                            value: '\u200B',
+                         },
+                          {
+                            name: ':nerd: ENGR210',
+                            value: '\u200B',
+                        },
+                         {
+                            name: ':face_with_monocle: ENGR215',
+                            value: '\u200B',
+                        },
+                         {
+                            name: ':grin: ENGR240',
+                            value: '\u200B',
+                         },
+                         {
+                            name: ':smile: ENGR245',
+                            value: '\u200B',
+                         },
+                         {
+                            name: ':smiley: ENGR271',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':grinning: ENGR310',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':confused: ENGR325',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':slight_frown: ENGR340',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':frowning2: ENGR345',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':fearful: ENGR420',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':sob: ENGR470',
+                            value: '\u200B',
+                         },
+                        {
+                            name: ':scream: ENGR480',
+                            value: '\u200B',
+                         },
+                         {
+                            name: ':exploding_head: ENGR491',
+                            value: '\u200B',
+                         },
+                    ],
+                    [
+                      // reactions go here
+                    ],
+                "Please select the appropriate emote, in accordance to the classes you've taken/taking.");
+
+              // Assigns roles
+              let role = client.guilds.cache.get('697153419114446968').roles.cache.find(role => role.name === embed[0].name.toLowerCase().split(": ")[1]);
+              client.guilds.cache.get('697153419114446968').members.cache.get(member.id).roles.add(role);
+
             } else {
                 channel.send(`I'm probably sliding in your DM's, check there.`);
             }
@@ -323,8 +335,12 @@ async function handleCommand(msg, cmd, args) {
                         value: 'Sends a DM with reactions to self assign major taken/taking.'
                     },
                     {
-                        name: '!classes',
-                        value: 'Sends a DM with reactions to self assign classes taken/taking.'
+                        name: '!classes-cs',
+                        value: 'Sends a DM with reactions to self assign the engineering classes you have taken/are taking.'
+                    },
+                    {
+                        name: '!classes-eng',
+                        value: 'Sends a DM with reactions to self assign the engineering classes you have taken/are taking.'
                     },
                     {
                         name: '!help',
